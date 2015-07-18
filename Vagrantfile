@@ -23,14 +23,20 @@ Vagrant.configure(2) do |config|
     s.path = "setup/riak-dev.sh"
     s.args = "2 1 1"
   end
-
-  # Exposed and init the Cluster 
+  
+  # Config cluster to listen on all interfaces
   config.vm.provision "shell" do |s|
     s.path = "setup/config-cluster.sh"
   end
 
-  # Add some tools 
+  # Add init scripts and some tools 
   config.vm.provision "shell" do |s|
     s.path = "setup/add-tools.sh"
+  end
+
+  # Init the cluster 
+  config.vm.provision "shell" do |s|
+    s.path = "setup/riak-init.sh"
+    s.privileged = false
   end
 end

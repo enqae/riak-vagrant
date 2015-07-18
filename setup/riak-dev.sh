@@ -1,5 +1,9 @@
 #!/bin/bash
 
+mkdir -p /home/vagrant/tmp
+
+TMP_RIAK=/home/vagrant/tmp
+
 # Depends on the follwoing version of Erlang from Basho
 ERLANG_VERSION=otp_src_R16B02-basho8.tar.gz
 ERLANG_UNTARRED=OTP_R16B02_basho8
@@ -22,7 +26,7 @@ sudo apt-get -y install libwxbase2.8 libwxgtk2.8-dev libqt4-opengl-dev
 sudo apt-get install -y openjdk-7-jdk
 
 # Erlang
-pushd /tmp
+pushd $TMP_RIAK
 wget http://s3.amazonaws.com/downloads.basho.com/erlang/$ERLANG_VERSION
 tar zxvf $ERLANG_VERSION
 pushd $ERLANG_UNTARRED/
@@ -30,7 +34,6 @@ export ERL_TOP=$(pwd)
 ./otp_build autoconf 
 ./configure && make && sudo make install
 popd
-rm -rf $ERLANG_VERSION $ERLANG_UNTARRED
 popd
 
 # Set the "limits" for Riak
@@ -40,7 +43,7 @@ sudo sed -i -e "\$a* hard nofile 65536" /etc/security/limits.conf
 
 
 # Riak Sources
-pushd /tmp
+pushd $TMP_RIAK
 sudo apt-get install -y libc6-dev-i386 libpam0g-dev
 RIAK_BASE_VERSION=$RIAK_MAJOR.$RIAK_MINOR
 RIAK_FULL_VERSION=$RIAK_BASE_VERSION.$RIAK_PATCH
@@ -54,8 +57,12 @@ make rel
 # Prepare 5 nodes for development
 make devrel DEVNODES=5
 
+# Adjust permissions for "dev"
+sudo chown -R vagrant:vagrant dev
+
 popd
+
+# put riak on opt
 sudo mv $RIAK_DIR /opt/riak
-sudo chown -R vagrant:vagrant /opt/riak
-rm -rf $RIAK_DIR*
+
 popd
