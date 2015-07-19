@@ -2,17 +2,17 @@
 
 export RIAK_HOME=/opt/riak
 
-riakup(){
-  for node in $RIAK_HOME/dev/dev*; do $node/bin/riak start; done
+riakstart(){
+  for node in $RIAK_HOME/dev/dev*; do echo $node; $node/bin/riak start; done
 }
-export -f riakup
+export -f riakstart
 
 riakstop(){
-  for node in $RIAK_HOME/dev/dev*; do $node/bin/riak stop; done
+  for node in $RIAK_HOME/dev/dev*; do echo $node; $node/bin/riak stop; done
 }
 export -f riakstop
 
 riakping(){
-  for node in $RIAK_HOME/dev/dev*; do $node/bin/riak ping; done
+  for node in $RIAK_HOME/dev/dev*; do echo $node; $node/bin/riak ping; done
 }
 export -f riakping
