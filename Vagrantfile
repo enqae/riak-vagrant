@@ -5,11 +5,19 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
 
   # Access to cluster nodes 
+  # HTTP Access
   config.vm.network "forwarded_port", guest: 10018, host: 10018
   config.vm.network "forwarded_port", guest: 10028, host: 10028
   config.vm.network "forwarded_port", guest: 10038, host: 10038
   config.vm.network "forwarded_port", guest: 10048, host: 10048
   config.vm.network "forwarded_port", guest: 10058, host: 10058
+
+  # PB Access
+  config.vm.network "forwarded_port", guest: 10017, host: 10017
+  config.vm.network "forwarded_port", guest: 10027, host: 10027
+  config.vm.network "forwarded_port", guest: 10037, host: 10037
+  config.vm.network "forwarded_port", guest: 10047, host: 10047
+  config.vm.network "forwarded_port", guest: 10057, host: 10057
 
   config.vm.provider :virtualbox do |vb|
      vb.memory = "1024"
